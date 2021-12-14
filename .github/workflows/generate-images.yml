@@ -1,7 +1,7 @@
 name: Generate Images
 on:
   schedule:
-    - cron: '0 1 * * *'
+    - cron: "0 1 * * *"
   workflow_dispatch:
 
 jobs:
@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: ChaoticOnyx/OnyxBay
-          ref: refs/head/release/chaotic
+          ref: release/chaotic
           path: ./OnyxBay
       - name: Generate Images
         shell: pwsh
