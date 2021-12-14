@@ -11,13 +11,22 @@
           "name": "Main",
           "path": "./maps/exodus/exodus-2.dmm"
         },
-        "3": {
+        "4": {
           "name": "Satellite",
           "path": "./maps/exodus/exodus-4.dmm"
         },
         "6": {
           "name": "Asteroid",
           "path": "./maps/exodus/exodus-6.dmm"
+        }
+      }
+    },
+    {
+      "name": "Frontier",
+      "levels": {
+        "1": {
+          "name": "Main",
+          "path": "./maps/exodus/frontier/frontier-1.dmm"
         }
       }
     }
