@@ -5,9 +5,9 @@ if ($null -eq $env:TARGET_REPOSITORY) {
 
 Write-Host "Путь до репозитория: $($env:TARGET_REPOSITORY)"
 
-$imagesPath = "$(Get-Location)\images"
-$config = Get-Content .\maps.json | ConvertFrom-Json
-$originalBin = "$(Get-Location)\bin\dmm-tools"
+$imagesPath = "$(Get-Location)/images"
+$config = Get-Content ./maps.json | ConvertFrom-Json
+$originalBin = "$(Get-Location)/bin/dmm-tools"
 
 if ($IsWindows) {
     $originalBin += ".exe"
@@ -24,7 +24,7 @@ if ($IsLinux) {
 }
 
 foreach ($map in $config.maps) {
-    $imageFolder = "$($imagesPath)\$($map.name.ToLower())"
+    $imageFolder = "$($imagesPath)/$($map.name.ToLower())"
     Write-Host "Создание снимков для карты '$($map.name)':"
 
     if ($false -eq (Test-Path -Path $imageFolder)) {
