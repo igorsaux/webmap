@@ -13,15 +13,15 @@ if ($IsWindows) {
     $originalBin += ".exe"
 }
 
-if ($IsLinux) {
-    chmod +x $originalBin
-}
-
 Write-Host "Путь до dmm-tools: $originalBin"
 
 $binPath = Copy-Item -Path $originalBin -Destination $env:TARGET_REPOSITORY -PassThru
 
 Push-Location -Path $env:TARGET_REPOSITORY
+
+if ($IsLinux) {
+    chmod +x "./dmm-tools"
+}
 
 foreach ($map in $config.maps) {
     $imageFolder = "$($imagesPath)\$($map.name.ToLower())"
@@ -34,9 +34,10 @@ foreach ($map in $config.maps) {
     foreach ($level in $map.levels.PSObject.Properties) {
         $index = $level.Name
         $levelData = $level.Value
-        Write-Host "[*] '$($levelData.name)' - $index"
 
-        Invoke-Expression "$binPath minimap -o $imageFolder $($levelData.path)" 2>&1 | Out-Null
+        Write-Host "::group::dmm-tools - $($levelData.name) [$index]"
+        Invoke-Expression "$binPath minimap -o $imageFolder $($levelData.path)"
+        Write-Host '::endgroup::'
     }
 }
 

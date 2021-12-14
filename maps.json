@@ -5,19 +5,19 @@
       "levels": {
         "1": {
           "name": "Ghetto",
-          "path": ".\\maps\\exodus\\exodus-1.dmm"
+          "path": "./maps/exodus/exodus-1.dmm"
         },
         "2": {
           "name": "Main",
-          "path": ".\\maps\\exodus\\exodus-2.dmm"
+          "path": "./maps/exodus/exodus-2.dmm"
         },
         "3": {
           "name": "Satellite",
-          "path": ".\\maps\\exodus\\exodus-4.dmm"
+          "path": "./maps/exodus/exodus-4.dmm"
         },
         "6": {
           "name": "Asteroid",
-          "path": ".\\maps\\exodus\\exodus-6.dmm"
+          "path": "./maps/exodus/exodus-6.dmm"
         }
       }
     }
