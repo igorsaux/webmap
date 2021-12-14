@@ -19,4 +19,12 @@ jobs:
           path: ./OnyxBay
       - name: Generate Images
         shell: pwsh
+        env:
+          TARGET_REPOSITORY: ./OnyxBay
         run: ./generate.ps1
+      - name: Add & Commit
+        uses: EndBug/add-and-commit@v7.5.0
+        with:
+          default_author: github_actions
+          add: ./images
+          rm: ./OnyxBay
