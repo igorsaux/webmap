@@ -2,9 +2,46 @@
 
 html,
 body {
-  font-family: 'Fira Sans';
+  font-family: 'Fira Sans', sans-serif;
   height: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+  color: white;
+  background-color: #2f3136;
+}
+
+#webmap {
+  width: 100%;
+  height: 100%;
+}
+
+#ListOfMaps {
+  padding-top: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+
+  h1 {
+    margin: 0;
+    font-weight: 900;
+  }
+
+  a {
+    color: white;
+    text-decoration: underline;
+    font-size: 1.5em;
+
+    &:hover {
+      color: rgba(255, 255, 255, 0.4);
+    }
+  }
+}
+
+.leaflet-container {
+  font-family: 'Fira Sans', sans-serif !important;
 }
