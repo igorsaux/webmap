@@ -1,6 +1,7 @@
 {
   "maps": [
     {
+      "mainLevel": "2",
       "name": "Exodus",
       "bounds": [
         [0, 0],
@@ -42,6 +43,7 @@
       }
     },
     {
+      "mainLevel": "1",
       "name": "Frontier",
       "bounds": [
         [0, 0],
