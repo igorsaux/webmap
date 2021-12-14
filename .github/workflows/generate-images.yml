@@ -1,0 +1,22 @@
+name: Generate Images
+on:
+  schedule:
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  Main:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checkout OnyxBay
+        uses: actions/checkout@v2
+        with:
+          repository: ChaoticOnyx/OnyxBay
+          ref: refs/head/release/chaotic
+          path: ./OnyxBay
+      - name: Generate Images
+        shell: pwsh
+        run: ./generate.ps1
