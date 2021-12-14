@@ -46,7 +46,7 @@ function showMap(map: SSMap) {
     [name: string]: ImageOverlay
   } = {}
 
-  L.tileLayer('./static/space.png', {
+  L.tileLayer('./space.png', {
     tileSize: L.point(322, 322),
     noWrap: false,
   }).addTo(webmap)
