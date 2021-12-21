@@ -1,10 +1,16 @@
 import 'leaflet/dist/leaflet.css'
-import L, { ImageOverlay, LatLngBoundsExpression, map } from 'leaflet'
+import L, {
+  ImageOverlay,
+  LatLngBoundsExpression,
+  LayerGroup,
+  map,
+} from 'leaflet'
 
 type Level = {
   name: string
   path: string
   bounds?: LatLngBoundsExpression
+  underlays?: string[]
 }
 
 type SSMap = {
@@ -23,6 +29,15 @@ type Data = {
 const dataUri = 'https://github-cdn.vercel.app/igorsaux/webmap/master/maps.json'
 const imagesBaseUri =
   'https://raw.githubusercontent.com/igorsaux/webmap/master/images/'
+
+function getImageFileOfLevelForMap(map: SSMap, level: Level) {
+  const mapName = map.name.toLowerCase()
+  const path = level.path.split('/')
+  let fileName = path[path.length - 1]
+  fileName = fileName.substring(0, fileName.length - 4)
+
+  return `${imagesBaseUri}${mapName}/${fileName}-1.png`
+}
 
 function showMap(map: SSMap) {
   const el = document.createElement('div')
@@ -43,7 +58,7 @@ function showMap(map: SSMap) {
   webmap.setMaxBounds(map.bounds)
 
   const layers: {
-    [name: string]: ImageOverlay
+    [name: string]: ImageOverlay | LayerGroup
   } = {}
 
   L.tileLayer('./space.png', {
@@ -53,13 +68,28 @@ function showMap(map: SSMap) {
 
   for (const index in map.levels) {
     const level = map.levels[index]
-    const path = level.path.split('/')
-    let fileName = path[path.length - 1]
-    fileName = fileName.substring(0, fileName.length - 4)
+    const underlays = []
 
-    layers[level.name] = L.imageOverlay(
-      `${imagesBaseUri}${mapName}/${fileName}-1.png`,
-      level.bounds || map.bounds
+    if (level.underlays) {
+      for (const underlayIndex of level.underlays) {
+        const underlay = map.levels[underlayIndex]
+        underlays.push(
+          L.imageOverlay(
+            getImageFileOfLevelForMap(map, underlay),
+            underlay.bounds || map.bounds,
+            {
+              opacity: 0.25,
+            }
+          )
+        )
+      }
+    }
+
+    layers[level.name] = L.layerGroup(underlays).addLayer(
+      L.imageOverlay(
+        getImageFileOfLevelForMap(map, level),
+        level.bounds || map.bounds
+      )
     )
 
     if (index === map.mainLevel) {
