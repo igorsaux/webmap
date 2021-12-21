@@ -14,7 +14,8 @@
         },
         "2": {
           "name": "Main",
-          "path": "./maps/exodus/exodus-2.dmm"
+          "path": "./maps/exodus/exodus-2.dmm",
+          "underlays": ["1"]
         },
         "4": {
           "name": "Satellite",
