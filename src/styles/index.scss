@@ -46,3 +46,7 @@ body {
 .leaflet-container {
   font-family: 'Fira Sans', sans-serif !important;
 }
+
+.UnderlayLayer {
+  filter: brightness(0.25);
+}

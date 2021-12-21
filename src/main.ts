@@ -78,7 +78,7 @@ function showMap(map: SSMap) {
             getImageFileOfLevelForMap(map, underlay),
             underlay.bounds || map.bounds,
             {
-              opacity: 0.25,
+              className: 'UnderlayLayer',
             }
           )
         )
