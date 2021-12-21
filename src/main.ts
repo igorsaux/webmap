@@ -4,7 +4,7 @@ import L, { ImageOverlay, LatLngBoundsExpression, map } from 'leaflet'
 type Level = {
   name: string
   path: string
-  bounds: LatLngBoundsExpression
+  bounds?: LatLngBoundsExpression
 }
 
 type SSMap = {
@@ -53,10 +53,13 @@ function showMap(map: SSMap) {
 
   for (const index in map.levels) {
     const level = map.levels[index]
+    const path = level.path.split('/')
+    let fileName = path[path.length - 1]
+    fileName = fileName.substring(0, fileName.length - 4)
 
     layers[level.name] = L.imageOverlay(
-      `${imagesBaseUri}${mapName}/${mapName}-${index}-1.png`,
-      level.bounds
+      `${imagesBaseUri}${mapName}/${fileName}-1.png`,
+      level.bounds || map.bounds
     )
 
     if (index === map.mainLevel) {
