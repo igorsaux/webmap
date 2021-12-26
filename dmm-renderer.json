@@ -1,0 +1,111 @@
+{
+  "$schema": "https://raw.githubusercontent.com/igorsaux/dmm-renderer/master/config.schema.json",
+  "maps": {
+    "Exodus": {
+      "mainLevel": "2",
+      "bounds": [
+        [0, 0],
+        [-255, 255]
+      ],
+      "layers": ["default", "areas", "landmarks", "random-loot"],
+      "levels": {
+        "1": {
+          "name": "Ghetto",
+          "path": "./maps/exodus/exodus-1.dmm"
+        },
+        "2": {
+          "name": "Main",
+          "path": "./maps/exodus/exodus-2.dmm",
+          "underlays": ["1"]
+        },
+        "4": {
+          "name": "Satellite",
+          "path": "./maps/exodus/exodus-4.dmm"
+        },
+        "6": {
+          "name": "Asteroid",
+          "path": "./maps/exodus/exodus-6.dmm"
+        }
+      }
+    },
+    "Frontier": {
+      "mainLevel": "1",
+      "bounds": [
+        [0, 0],
+        [-300, 300]
+      ],
+      "layers": ["default", "areas", "landmarks", "random-loot"],
+      "levels": {
+        "1": {
+          "name": "Main",
+          "path": "./maps/exodus/frontier/frontier-1.dmm"
+        }
+      }
+    }
+  },
+  "selectors": {
+    "atom": {
+      "rules": [
+        {
+          "type": "ByPath",
+          "include": [".*"],
+          "exclude": [
+            "/area/.*",
+            "/obj/effect/shuttle_landmark/.*",
+            "/obj/effect/landmark/.*",
+            "/obj/random/.*"
+          ]
+        }
+      ]
+    },
+    "area": {
+      "rules": [
+        {
+          "type": "ByPath",
+          "include": ["/area/.*"],
+          "exclude": []
+        }
+      ]
+    },
+    "landmark": {
+      "rules": [
+        {
+          "type": "ByPath",
+          "include": [
+            "/obj/effect/shuttle_landmark/.*",
+            "/obj/effect/landmark/.*"
+          ],
+          "exclude": []
+        }
+      ]
+    },
+    "random": {
+      "rules": [
+        {
+          "type": "ByPath",
+          "include": ["/obj/random/.*"],
+          "exclude": []
+        }
+      ]
+    }
+  },
+  "layers": {
+    "default": {
+      "display": "Main",
+      "selectors": ["atom"]
+    },
+    "areas": {
+      "display": "Areas",
+      "selectors": ["area"]
+    },
+    "landmarks": {
+      "display": "Landmarks",
+      "selectors": ["landmark"]
+    },
+    "random-loot": {
+      "display": "Random Loot",
+      "selectors": ["random"]
+    }
+  },
+  "dme": "baystation12.dme"
+}

@@ -5,41 +5,30 @@ if ($null -eq $env:TARGET_REPOSITORY) {
 
 Write-Host "Путь до репозитория: $($env:TARGET_REPOSITORY)"
 
-$imagesPath = "$(Get-Location)/images"
-$config = Get-Content ./maps.json | ConvertFrom-Json
-$originalBin = "$(Get-Location)/bin/dmm-tools"
+$configPath = "$(Get-Location)/dmm-renderer.json"
+$imagesPath = "$(Get-Location)/images/"
+$originalBin = "$(Get-Location)/bin/dmm-renderer-cli"
 
 if ($IsWindows) {
     $originalBin += ".exe"
 }
 
-Write-Host "Путь до dmm-tools: $originalBin"
+Write-Host "Путь до dmm-renderer-cli: $originalBin"
 
 $binPath = Copy-Item -Path $originalBin -Destination $env:TARGET_REPOSITORY -PassThru
 
 Push-Location -Path $env:TARGET_REPOSITORY
 
 if ($IsLinux) {
-    chmod +x "./dmm-tools"
+    chmod +x "./dmm-renderer-cli"
 }
 
-foreach ($map in $config.maps) {
-    $imageFolder = "$($imagesPath)/$($map.name.ToLower())"
-    Write-Host "Создание снимков для карты '$($map.name)':"
+$env:DMM_RENDERER_LOG = "trace"
+Write-Host "::group::dmm-renderer-cli"
+Invoke-Expression "$binPath --config $configPath"
+Write-Host '::endgroup::'
 
-    if ($false -eq (Test-Path -Path $imageFolder)) {
-        New-Item -Path $imageFolder -ItemType Directory
-    }
-
-    foreach ($level in $map.levels.PSObject.Properties) {
-        $index = $level.Name
-        $levelData = $level.Value
-
-        Write-Host "::group::dmm-tools - $($levelData.name) [$index]"
-        Invoke-Expression "$binPath minimap -o $imageFolder $($levelData.path)"
-        Write-Host '::endgroup::'
-    }
-}
+Move-Item "*.png" -Destination $imagesPath
 
 Remove-Item $binPath
 Pop-Location
