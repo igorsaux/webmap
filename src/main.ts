@@ -6,40 +6,67 @@ import L, {
   map,
 } from 'leaflet'
 
+type Maps = {
+  [key: string]: Map
+}
+
+type Layers = {
+  [key: string]: Layer
+}
+
+type Selectors = {
+  [key: string]: Selector
+}
+
 type Level = {
   name: string
   path: string
-  bounds?: LatLngBoundsExpression
-  underlays?: string[]
+  underlays?: any[]
 }
 
-type SSMap = {
-  mainLevel: string
-  name: string
+type Layer = {
+  display: string
+  selectors: string[]
+}
+
+type Map = {
   bounds: LatLngBoundsExpression
-  levels: {
-    [index: string]: Level
-  }
+  layers: string[]
+  levels: Level[]
+  mainLevel?: string
 }
 
-type Data = {
-  maps: SSMap[]
+type Selector = {
+  rules: Rule[]
 }
 
-const dataUri = 'https://github-cdn.vercel.app/igorsaux/webmap/master/maps.json'
+type Rule = {
+  exclude?: string[]
+  include: string[]
+  type: any
+}
+
+type Config = {
+  dme: string
+  layers: Layers
+  maps: Maps
+  selectors: Selectors
+}
+
+const dataUri =
+  'https://raw.githubusercontent.com/igorsaux/webmap/master/dmm-renderer.json'
 const imagesBaseUri =
   'https://raw.githubusercontent.com/igorsaux/webmap/master/images/'
 
-function getImageFileOfLevelForMap(map: SSMap, level: Level) {
-  const mapName = map.name.toLowerCase()
-  const path = level.path.split('/')
-  let fileName = path[path.length - 1]
-  fileName = fileName.substring(0, fileName.length - 4)
-
-  return `${imagesBaseUri}${mapName}/${fileName}-1.png`
+function getImageFileOfMap(
+  mapName: string,
+  levelName: string,
+  layerName: string
+) {
+  return `${imagesBaseUri}${mapName}-${levelName}-${layerName}.png`
 }
 
-function showMap(map: SSMap) {
+function showMap(mapName: string, map: Map, layers: Layers) {
   const el = document.createElement('div')
   el.id = 'webmap'
   document.body.appendChild(el)
@@ -51,32 +78,59 @@ function showMap(map: SSMap) {
     maxZoom: 6,
   })
 
-  const mapName = map.name.toLocaleLowerCase()
   let mainLayer
+  let mainLevel
 
   webmap.fitBounds(map.bounds)
   webmap.setMaxBounds(map.bounds)
+  let mainControl = L.control.layers().addTo(webmap)
 
-  const layers: {
+  const baseLayers: {
     [name: string]: ImageOverlay | LayerGroup
   } = {}
 
-  L.tileLayer('./space.png', {
-    tileSize: L.point(322, 322),
-    noWrap: false,
-  }).addTo(webmap)
+  const overlays: {
+    [name: string]: {
+      [name: string]: ImageOverlay
+    }
+  } = {}
+
+  const updateOverlays = (targetLevel: string) => {
+    for (const level of Object.keys(overlays)) {
+      for (const overlay of Object.values(overlays[level])) {
+        mainControl.removeLayer(overlay)
+      }
+    }
+
+    const levelOverlays = overlays[targetLevel]
+
+    for (const name in levelOverlays) {
+      const overlay = levelOverlays[name]
+      mainControl.addOverlay(overlay, name)
+    }
+  }
 
   for (const index in map.levels) {
     const level = map.levels[index]
     const underlays = []
+
+    overlays[level.name] = {}
+
+    for (const name of map.layers.slice(1)) {
+      const layer = layers[name]
+      overlays[level.name][layer.display] = L.imageOverlay(
+        getImageFileOfMap(mapName, level.name, name),
+        map.bounds
+      )
+    }
 
     if (level.underlays) {
       for (const underlayIndex of level.underlays) {
         const underlay = map.levels[underlayIndex]
         underlays.push(
           L.imageOverlay(
-            getImageFileOfLevelForMap(map, underlay),
-            underlay.bounds || map.bounds,
+            getImageFileOfMap(mapName, underlay.name, map.layers[0]),
+            map.bounds,
             {
               className: 'UnderlayLayer',
             }
@@ -85,23 +139,28 @@ function showMap(map: SSMap) {
       }
     }
 
-    layers[level.name] = L.layerGroup(underlays).addLayer(
+    baseLayers[level.name] = L.layerGroup(underlays).addLayer(
       L.imageOverlay(
-        getImageFileOfLevelForMap(map, level),
-        level.bounds || map.bounds
+        getImageFileOfMap(mapName, level.name, map.layers[0]),
+        map.bounds
       )
     )
 
+    mainControl.addBaseLayer(baseLayers[level.name], level.name)
+
     if (index === map.mainLevel) {
-      mainLayer = layers[level.name]
+      mainLayer = baseLayers[level.name]
+      updateOverlays(level.name)
     }
   }
 
   mainLayer?.addTo(webmap)
-  L.control.layers(layers).addTo(webmap)
+  webmap.on('baselayerchange', (event: L.LayersControlEvent) =>
+    updateOverlays(event.name)
+  )
 }
 
-function showListOfMaps(maps: SSMap[]) {
+function showListOfMaps(maps: Maps) {
   const list = document.createElement('div')
   list.id = 'ListOfMaps'
 
@@ -110,10 +169,10 @@ function showListOfMaps(maps: SSMap[]) {
 
   list.appendChild(title)
 
-  for (const map of maps) {
+  for (const mapName in maps) {
     const link = document.createElement('a')
-    link.innerText = map.name
-    link.href = `#/${map.name.toLowerCase()}`
+    link.innerText = mapName
+    link.href = `#/${mapName.toLowerCase()}`
 
     list.appendChild(link)
   }
@@ -122,16 +181,18 @@ function showListOfMaps(maps: SSMap[]) {
 }
 
 async function main() {
-  const data = (await (await fetch(dataUri)).json()) as Data
+  const data = (await (await fetch(dataUri)).json()) as Config
 
   const hash = location.hash.replace('#/', '').toLowerCase()
-  const mapToShow = data.maps.find(map => map.name.toLowerCase() === hash)
+  const mapToShow = Object.keys(data.maps).find(
+    mapName => mapName.toLowerCase() === hash
+  )
 
   if (!mapToShow || !hash) {
     return showListOfMaps(data.maps)
   }
 
-  showMap(mapToShow!)
+  showMap(mapToShow!, data.maps[mapToShow], data.layers)
 }
 
 main()
