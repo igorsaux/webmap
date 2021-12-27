@@ -28,7 +28,7 @@ Write-Host "::group::dmm-renderer-cli"
 Invoke-Expression "$binPath --config $configPath"
 Write-Host '::endgroup::'
 
-Move-Item "*.png" -Destination $imagesPath
+Move-Item "*.png" -Destination $imagesPath -Force
 
 Remove-Item $binPath
 Pop-Location

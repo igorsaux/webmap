@@ -53,7 +53,7 @@
             "/area/.*",
             "/obj/effect/shuttle_landmark/.*",
             "/obj/effect/landmark/.*",
-            "/obj/random/.*"
+            "/obj/random.*"
           ]
         }
       ]
@@ -62,8 +62,7 @@
       "rules": [
         {
           "type": "ByPath",
-          "include": ["/area/.*"],
-          "exclude": []
+          "include": ["/area/.*"]
         }
       ]
     },
@@ -74,8 +73,7 @@
           "include": [
             "/obj/effect/shuttle_landmark/.*",
             "/obj/effect/landmark/.*"
-          ],
-          "exclude": []
+          ]
         }
       ]
     },
@@ -83,8 +81,7 @@
       "rules": [
         {
           "type": "ByPath",
-          "include": ["/obj/random/.*"],
-          "exclude": []
+          "include": ["/obj/random.*"]
         }
       ]
     }
