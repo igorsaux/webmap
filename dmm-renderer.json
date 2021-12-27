@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/igorsaux/dmm-renderer/master/config.schema.json",
   "groups": {
     "Exodus": {
-      "mainLevel": "2",
+      "mainLevel": "Main",
       "bounds": [
         [0, 0],
         [-255, 255]
@@ -14,7 +14,7 @@
         },
         "Main": {
           "path": "./maps/exodus/exodus-2.dmm",
-          "underlays": ["1"]
+          "underlays": ["Ghetto"]
         },
         "Satellite": {
           "path": "./maps/exodus/exodus-4.dmm"
