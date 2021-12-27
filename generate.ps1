@@ -5,7 +5,7 @@ if ($null -eq $env:TARGET_REPOSITORY) {
 
 Write-Host "Путь до репозитория: $($env:TARGET_REPOSITORY)"
 
-$configPath = "$(Get-Location)/dmm-renderer.json"
+$configPath = "$(Get-Location)/dmm-renderer.yaml"
 $imagesPath = "$(Get-Location)/images/"
 $originalBin = "$(Get-Location)/bin/dmm-renderer-cli"
 
