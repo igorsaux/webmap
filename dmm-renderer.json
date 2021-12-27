@@ -25,7 +25,7 @@
       }
     },
     "Frontier": {
-      "mainLevel": "1",
+      "mainLevel": "Main",
       "bounds": [
         [0, 0],
         [-300, 300]
