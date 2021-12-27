@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/igorsaux/dmm-renderer/master/config.schema.json",
-  "maps": {
+  "groups": {
     "Exodus": {
       "mainLevel": "2",
       "bounds": [
@@ -9,21 +9,17 @@
       ],
       "layers": ["default", "areas", "landmarks", "random-loot"],
       "levels": {
-        "1": {
-          "name": "Ghetto",
+        "Ghetto": {
           "path": "./maps/exodus/exodus-1.dmm"
         },
-        "2": {
-          "name": "Main",
+        "Main": {
           "path": "./maps/exodus/exodus-2.dmm",
           "underlays": ["1"]
         },
-        "4": {
-          "name": "Satellite",
+        "Satellite": {
           "path": "./maps/exodus/exodus-4.dmm"
         },
-        "6": {
-          "name": "Asteroid",
+        "Asteroid": {
           "path": "./maps/exodus/exodus-6.dmm"
         }
       }
@@ -36,8 +32,7 @@
       ],
       "layers": ["default", "areas", "landmarks", "random-loot"],
       "levels": {
-        "1": {
-          "name": "Main",
+        "Main": {
           "path": "./maps/exodus/frontier/frontier-1.dmm"
         }
       }
@@ -48,13 +43,22 @@
       "rules": [
         {
           "type": "ByPath",
-          "include": [".*"],
-          "exclude": [
-            "/area/.*",
-            "/obj/effect/shuttle_landmark/.*",
-            "/obj/effect/landmark/.*",
-            "/obj/random.*"
-          ]
+          "include": [".*"]
+        },
+        {
+          "type": "UseSelector",
+          "name": "area",
+          "negate": true
+        },
+        {
+          "type": "UseSelector",
+          "name": "landmark",
+          "negate": true
+        },
+        {
+          "type": "UseSelector",
+          "name": "random",
+          "negate": true
         }
       ]
     },
