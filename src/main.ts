@@ -1,10 +1,5 @@
 import 'leaflet/dist/leaflet.css'
-import L, {
-  ImageOverlay,
-  LatLngBoundsExpression,
-  LayerGroup,
-  map,
-} from 'leaflet'
+import L, { ImageOverlay, LatLngBoundsExpression, LayerGroup } from 'leaflet'
 
 type Maps = {
   [key: string]: Map
@@ -19,7 +14,6 @@ type Selectors = {
 }
 
 type Level = {
-  name: string
   path: string
   underlays?: any[]
 }
@@ -36,20 +30,27 @@ type Map = {
   mainLevel?: string
 }
 
-type Selector = {
-  rules: Rule[]
-}
-
-type Rule = {
+type ByPath = {
   exclude?: string[]
   include: string[]
   type: any
 }
 
+type UseSelector = {
+  name: string
+  negate: boolean
+}
+
+type Selector = {
+  rules: Rule[]
+}
+
+type Rule = ByPath | UseSelector
+
 type Config = {
   dme: string
   layers: Layers
-  maps: Maps
+  groups: Maps
   selectors: Selectors
 }
 
@@ -110,26 +111,25 @@ function showMap(mapName: string, map: Map, layers: Layers) {
     }
   }
 
-  for (const index in map.levels) {
-    const level = map.levels[index]
+  for (const levelName in map.levels) {
+    const level = map.levels[levelName]
     const underlays = []
 
-    overlays[level.name] = {}
+    overlays[levelName] = {}
 
     for (const name of map.layers.slice(1)) {
       const layer = layers[name]
-      overlays[level.name][layer.display] = L.imageOverlay(
-        getImageFileOfMap(mapName, level.name, name),
+      overlays[levelName][layer.display] = L.imageOverlay(
+        getImageFileOfMap(mapName, levelName, name),
         map.bounds
       )
     }
 
     if (level.underlays) {
-      for (const underlayIndex of level.underlays) {
-        const underlay = map.levels[underlayIndex]
+      for (const underlayName of level.underlays) {
         underlays.push(
           L.imageOverlay(
-            getImageFileOfMap(mapName, underlay.name, map.layers[0]),
+            getImageFileOfMap(mapName, underlayName, map.layers[0]),
             map.bounds,
             {
               className: 'UnderlayLayer',
@@ -139,18 +139,18 @@ function showMap(mapName: string, map: Map, layers: Layers) {
       }
     }
 
-    baseLayers[level.name] = L.layerGroup(underlays).addLayer(
+    baseLayers[levelName] = L.layerGroup(underlays).addLayer(
       L.imageOverlay(
-        getImageFileOfMap(mapName, level.name, map.layers[0]),
+        getImageFileOfMap(mapName, levelName, map.layers[0]),
         map.bounds
       )
     )
 
-    mainControl.addBaseLayer(baseLayers[level.name], level.name)
+    mainControl.addBaseLayer(baseLayers[levelName], levelName)
 
-    if (index === map.mainLevel) {
-      mainLayer = baseLayers[level.name]
-      updateOverlays(level.name)
+    if (levelName === map.mainLevel) {
+      mainLayer = baseLayers[levelName]
+      updateOverlays(levelName)
     }
   }
 
@@ -184,15 +184,15 @@ async function main() {
   const data = (await (await fetch(dataUri)).json()) as Config
 
   const hash = location.hash.replace('#/', '').toLowerCase()
-  const mapToShow = Object.keys(data.maps).find(
+  const mapToShow = Object.keys(data.groups).find(
     mapName => mapName.toLowerCase() === hash
   )
 
   if (!mapToShow || !hash) {
-    return showListOfMaps(data.maps)
+    return showListOfMaps(data.groups)
   }
 
-  showMap(mapToShow!, data.maps[mapToShow], data.layers)
+  showMap(mapToShow!, data.groups[mapToShow], data.layers)
 }
 
 main()
