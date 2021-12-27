@@ -1,5 +1,6 @@
 import 'leaflet/dist/leaflet.css'
 import L, { ImageOverlay, LatLngBoundsExpression, LayerGroup } from 'leaflet'
+import jsyaml from 'js-yaml'
 
 type Maps = {
   [key: string]: Map
@@ -55,7 +56,7 @@ type Config = {
 }
 
 const dataUri =
-  'https://raw.githubusercontent.com/igorsaux/webmap/master/dmm-renderer.json'
+  'https://raw.githubusercontent.com/igorsaux/webmap/master/dmm-renderer.yaml'
 const imagesBaseUri =
   'https://raw.githubusercontent.com/igorsaux/webmap/master/images/'
 
@@ -181,7 +182,8 @@ function showListOfMaps(maps: Maps) {
 }
 
 async function main() {
-  const data = (await (await fetch(dataUri)).json()) as Config
+  const rawData = await (await fetch(dataUri)).text()
+  const data = jsyaml.load(rawData) as Config
 
   const hash = location.hash.replace('#/', '').toLowerCase()
   const mapToShow = Object.keys(data.groups).find(
