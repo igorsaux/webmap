@@ -78,7 +78,12 @@ function showMap(mapName: string, map: Map, layers: Layers) {
     zoom: 4,
     crs: L.CRS.Simple,
     maxZoom: 6,
+    minZoom: 2,
   })
+
+  webmap.attributionControl.setPrefix(
+    'OnyxBay • Igor Spichkin 2021 • <a href=""https://github.com/igorsaux/webmap>GitHub</a>'
+  )
 
   let mainLayer
   let mainLevel

@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700;900&display=swap');
 
+$fgColor: white;
+$bgColor: #2b2e2e;
+$accent: #24edff;
+
 html,
 body {
   font-family: 'Fira Sans', sans-serif;
@@ -9,13 +13,14 @@ body {
   box-sizing: border-box;
 
   color: white;
-  background-color: #2f3136;
+  background-color: $bgColor;
 }
 
 #webmap {
   width: 100%;
   height: 100%;
   image-rendering: pixelated;
+  background-color: black;
 }
 
 #ListOfMaps {
@@ -49,4 +54,36 @@ body {
 
 .UnderlayLayer {
   filter: brightness(0.25);
+}
+
+.leaflet-bar a {
+  border: none !important;
+}
+
+.leaflet-control-layers-toggle {
+  border-radius: 2px !important;
+}
+
+.leaflet-control {
+  border: 2px solid #484c4c !important;
+  color: $fgColor !important;
+  background-color: $bgColor !important;
+
+  * {
+    color: $fgColor !important;
+    background-color: $bgColor !important;
+  }
+
+  &-attribution {
+    border: none !important;
+    border-radius: 2px 0 0 0;
+
+    a {
+      color: $accent !important;
+    }
+  }
+}
+
+.leaflet-disabled {
+  color: darken($color: $fgColor, $amount: 50) !important;
 }
