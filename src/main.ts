@@ -82,7 +82,7 @@ function showMap(mapName: string, map: Map, layers: Layers) {
   })
 
   webmap.attributionControl.setPrefix(
-    'OnyxBay • Igor Spichkin 2021 • <a href=""https://github.com/igorsaux/webmap>GitHub</a>'
+    'OnyxBay • Igor Spichkin 2021 • <a href="https://github.com/igorsaux/webmap">GitHub</a>'
   )
 
   webmap.addLayer(
