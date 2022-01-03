@@ -52,6 +52,9 @@ selectors:
       - type: UseSelector
         name: random
         negate: true
+      - type: UseSelector
+        name: space
+        negate: true
   area:
     rules:
       - type: ByPath
@@ -61,13 +64,18 @@ selectors:
     rules:
       - type: ByPath
         include:
-          - /obj/effect/shuttle_landmark/.*
-          - /obj/effect/landmark/.*
+          - /obj/effect/shuttle_landmark.*
+          - /obj/effect/landmark.*
   random:
     rules:
       - type: ByPath
         include:
           - /obj/random.*
+  space:
+    rules:
+      - type: ByPath
+        include:
+          - /turf/space.*
 layers:
   default:
     display: Main
