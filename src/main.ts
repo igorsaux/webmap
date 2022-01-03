@@ -85,8 +85,14 @@ function showMap(mapName: string, map: Map, layers: Layers) {
     'OnyxBay • Igor Spichkin 2021 • <a href=""https://github.com/igorsaux/webmap>GitHub</a>'
   )
 
+  webmap.addLayer(
+    L.tileLayer('./space.png', {
+      tileSize: L.point(322, 322),
+      noWrap: false,
+    }).addTo(webmap)
+  )
+
   let mainLayer
-  let mainLevel
 
   webmap.fitBounds(map.bounds)
   webmap.setMaxBounds(map.bounds)
