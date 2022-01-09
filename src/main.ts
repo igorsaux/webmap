@@ -56,7 +56,7 @@ type Config = {
 }
 
 const dataUri =
-  'https://raw.githubusercontent.com/igorsaux/webmap/master/dmm-renderer.yaml'
+  'https://raw.githubusercontent.com/igorsaux/webmap/master/sputnik.yaml'
 const imagesBaseUri =
   'https://raw.githubusercontent.com/igorsaux/webmap/master/images/'
 
