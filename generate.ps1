@@ -5,26 +5,26 @@ if ($null -eq $env:TARGET_REPOSITORY) {
 
 Write-Host "Путь до репозитория: $($env:TARGET_REPOSITORY)"
 
-$configPath = "$(Get-Location)/dmm-renderer.yaml"
+$configPath = "$(Get-Location)/sputnik.yaml"
 $imagesPath = "$(Get-Location)/images/"
-$originalBin = "$(Get-Location)/bin/dmm-renderer-cli"
+$originalBin = "$(Get-Location)/bin/sputnik-cli"
 
 if ($IsWindows) {
     $originalBin += ".exe"
 }
 
-Write-Host "Путь до dmm-renderer-cli: $originalBin"
+Write-Host "Путь до sputnik-cli: $originalBin"
 
 $binPath = Copy-Item -Path $originalBin -Destination $env:TARGET_REPOSITORY -PassThru
 
 Push-Location -Path $env:TARGET_REPOSITORY
 
 if ($IsLinux) {
-    chmod +x "./dmm-renderer-cli"
+    chmod +x "./sputnik-cli"
 }
 
-$env:DMM_RENDERER_LOG = "trace"
-Write-Host "::group::dmm-renderer-cli"
+$env:SPUTNIK_LOG = "trace"
+Write-Host "::group::sputnik-cli"
 Invoke-Expression "$binPath --config $configPath"
 Write-Host '::endgroup::'
 
