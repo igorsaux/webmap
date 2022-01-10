@@ -1,7 +1,7 @@
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import jsyaml from 'js-yaml'
-import { Config, Maps, MapWithName, WebmapBuilder } from './kartograf'
+import { Config, Maps, MapWithName, WebmapBuilder } from 'kartograf'
 
 const dataUri =
   'https://raw.githubusercontent.com/igorsaux/webmap/master/sputnik.yaml'

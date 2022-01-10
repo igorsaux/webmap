@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "js-yaml": "^4.1.0",
+    "kartograf": "github:igorsaux/kartograf",
     "leaflet": "^1.7.1"
   }
 }
