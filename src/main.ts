@@ -8,12 +8,13 @@ const dataUri =
 const imagesBaseUri =
   'https://raw.githubusercontent.com/igorsaux/webmap/master/images/'
 
-function getImageFileOfMap(
-  mapName: string,
-  levelName: string,
-  layerName: string
-) {
-  return `${imagesBaseUri}${mapName}-${levelName}-${layerName}.png`
+const TopLeftCRS = L.extend({}, L.CRS, {
+  projection: L.Projection.LonLat,
+  transformation: new L.Transformation(1, 0, 1, 0),
+})
+
+function getFolderOfMap(mapName: string, levelName: string, layerName: string) {
+  return `${imagesBaseUri}${mapName}-${levelName}-${layerName}`
 }
 
 function showMap(config: Config, map: MapWithName) {
@@ -23,15 +24,13 @@ function showMap(config: Config, map: MapWithName) {
 
   const webmap = WebmapBuilder.new({
     webmap: new L.Map(element, {
-      center: [-125, 125],
-      zoom: 4,
-      crs: L.CRS.Simple,
-      maxZoom: 6,
-      minZoom: 2,
+      center: [0, 0],
+      crs: TopLeftCRS,
+      maxZoom: 4,
     }),
     map,
     config,
-    pathGetter: getImageFileOfMap,
+    pathGetter: getFolderOfMap,
   })
     .andSetAttributionPrefix(
       'OnyxBay • Igor Spichkin 2021 • <a href="https://github.com/igorsaux/webmap">GitHub</a>'
