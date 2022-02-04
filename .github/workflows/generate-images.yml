@@ -22,6 +22,9 @@ jobs:
         env:
           TARGET_REPOSITORY: ./OnyxBay
         run: ./generate.ps1
+      - name: Split Images
+        shell: pwsh
+        run: ./split.ps1
       - name: Add & Commit
         uses: EndBug/add-and-commit@v7.5.0
         with:
