@@ -9,7 +9,7 @@ $splitterBin = "$(Get-Location)/bin/splitter"
 $cfg = Get-Content -Path $cfgPath
 
 if ($cfgPath.EndsWith('.yaml') -or $cfgPath.EndsWith('.yml')) {
-    Install-Module -Name powershell-yaml -Confirm
+    Install-Module -Name powershell-yaml -Force
     $cfg = $cfg | ConvertFrom-Yaml
 }
 else {
