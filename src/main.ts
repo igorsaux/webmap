@@ -1,7 +1,15 @@
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import jsyaml from 'js-yaml'
-import { Config, Maps, MapWithName, WebmapBuilder } from 'kartograf'
+import {
+  Config,
+  FileLayerPathGetter,
+  getLayerFolder,
+  getLayerImage,
+  Maps,
+  MapWithName,
+  WebmapBuilder,
+} from 'kartograf'
 
 const dataUri =
   'https://raw.githubusercontent.com/igorsaux/webmap/master/sputnik.yaml'
@@ -13,14 +21,20 @@ const TopLeftCRS = L.extend({}, L.CRS, {
   transformation: new L.Transformation(1, 0, 1, 0),
 })
 
-function getFolderOfMap(mapName: string, levelName: string, layerName: string) {
-  return `${imagesBaseUri}${mapName}-${levelName}-${layerName}`
-}
-
 function showMap(config: Config, map: MapWithName) {
   const element = document.createElement('div')
   element.id = 'webmap'
   document.body.appendChild(element)
+
+  let pathGetter: FileLayerPathGetter
+
+  if (config.layerSettings?.type === 'Tiles') {
+    pathGetter = (mapName, levelName, layerName) =>
+      `${imagesBaseUri}${getLayerFolder(mapName, levelName, layerName)}`
+  } else {
+    pathGetter = (mapName, levelName, layerName) =>
+      `${imagesBaseUri}${getLayerImage(mapName, levelName, layerName)}`
+  }
 
   const webmap = WebmapBuilder.new({
     webmap: new L.Map(element, {
@@ -30,7 +44,7 @@ function showMap(config: Config, map: MapWithName) {
     }),
     map,
     config,
-    pathGetter: getFolderOfMap,
+    pathGetter: pathGetter,
   })
     .andSetAttributionPrefix(
       'OnyxBay • Igor Spichkin 2021 • <a href="https://github.com/igorsaux/webmap">GitHub</a>'
