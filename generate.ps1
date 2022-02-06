@@ -9,6 +9,10 @@ $configPath = "$(Get-Location)/sputnik.yaml"
 $imagesPath = "$(Get-Location)/images/"
 $originalBin = "$(Get-Location)/bin/sputnik-cli"
 
+if ((Test-Path $imagesPath) -eq $false) {
+    New-Item $imagesPath -ItemType Directory
+}
+
 if ($IsWindows) {
     $originalBin += ".exe"
 }
