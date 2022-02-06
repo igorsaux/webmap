@@ -1,6 +1,6 @@
 if ($null -eq $env:TARGET_REPOSITORY) {
     Write-Host 'Переменная среды TARGET_REPOSITORY не найдена.'
-    exit
+    exit -1
 }
 
 Write-Host "Путь до репозитория: $($env:TARGET_REPOSITORY)"

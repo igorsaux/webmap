@@ -95,3 +95,6 @@ layers:
     selectors:
       - random
 dme: baystation12.dme
+layerSettings:
+  type: 'Tiles'
+  tileSize: 1024
