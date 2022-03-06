@@ -38,6 +38,21 @@ groups:
     levels:
       Main:
         path: ./maps/exodus/frontier/frontier-1.dmm
+  Frontier-SCP:
+    mainLevel: Main
+    bounds:
+      - - 0
+        - 0
+      - - -300
+        - 300
+    layers:
+      - default
+      - areas
+      - landmarks
+      - random-loot
+    levels:
+      Main:
+        path: ./maps/exodus/frontier-SCP/frontier-SCP-1.dmm
 selectors:
   atom:
     rules:
