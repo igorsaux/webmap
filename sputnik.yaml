@@ -70,6 +70,8 @@ groups:
         path: ./maps/exodus/genesis/genesis-1.dmm
       Main:
         path: ./maps/exodus/genesis/genesis-2.dmm
+        underlays:
+          - Ghetto
       Asteroid:
         path: ./maps/exodus/genesis/genesis-6.dmm
 selectors:
