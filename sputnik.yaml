@@ -5,8 +5,8 @@ groups:
     bounds:
       - - 0
         - 0
-      - - -255
-        - 255
+      - - -5
+        - 5
     layers:
       - default
       - areas
@@ -28,8 +28,8 @@ groups:
     bounds:
       - - 0
         - 0
-      - - -300
-        - 300
+      - - -5
+        - 5
     layers:
       - default
       - areas
@@ -43,8 +43,8 @@ groups:
     bounds:
       - - 0
         - 0
-      - - -300
-        - 300
+      - - -5
+        - 5
     layers:
       - default
       - areas
