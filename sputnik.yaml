@@ -53,6 +53,25 @@ groups:
     levels:
       Main:
         path: ./maps/exodus/frontier-SCP/frontier-SCP-1.dmm
+  Genesis:
+    mainLevel: Main
+    bounds:
+      - - 0
+        - 0
+      - - -5
+        - 5
+    layers:
+      - default
+      - areas
+      - landmarks
+      - random-loot
+    levels:
+      Ghetto:
+        path: ./maps/exodus/genesis/genesis-1.dmm
+      Main:
+        path: ./maps/exodus/genesis/genesis-2.dmm
+      Asteroid:
+        path: ./maps/exodus/genesis/genesis-6.dmm
 selectors:
   atom:
     rules:
